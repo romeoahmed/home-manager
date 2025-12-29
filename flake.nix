@@ -14,7 +14,10 @@
     { nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       homeConfigurations."victor" = home-manager.lib.homeManagerConfiguration {
@@ -29,6 +32,7 @@
           ./modules/fish.nix
           ./modules/alacritty.nix
           ./modules/git.nix
+          ./modules/inputMethod.nix
         ];
 
         # Optionally use extraSpecialArgs

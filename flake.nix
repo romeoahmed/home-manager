@@ -33,6 +33,7 @@
           ./modules/alacritty.nix
           ./modules/git.nix
           ./modules/inputMethod.nix
+          ./modules/fonts.nix
         ];
 
         # Optionally use extraSpecialArgs

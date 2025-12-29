@@ -9,6 +9,9 @@
     nil
     nixfmt-rfc-style
 
+    vim
+    nano
+
     ripgrep
     fd
     bat

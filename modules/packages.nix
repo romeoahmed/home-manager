@@ -8,7 +8,7 @@
     unzip
     wl-clipboard
 
-    nil
+    nixd
     nixfmt-rfc-style
 
     vim

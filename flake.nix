@@ -8,8 +8,18 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     rime-wanxiang = {
       url = "github:amzxyz/rime_wanxiang";
+      flake = false;
+    };
+
+    fish-replay = {
+      url = "github:jorgebucaran/replay.fish";
+      flake = false;
+    };
+    fish-catppuccin = {
+      url = "github:catppuccin/fish";
       flake = false;
     };
   };
@@ -28,7 +38,7 @@
         inherit pkgs;
 
         extraSpecialArgs = { inherit inputs; };
-        
+
         # Specify your home configuration modules here, for example,
         # the path to your home.nix.
         modules = [

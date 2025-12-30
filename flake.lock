@@ -1,5 +1,37 @@
 {
   "nodes": {
+    "fish-catppuccin": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1764362944,
+        "narHash": "sha256-KD/sWXSXYVlV+n7ft4vKFYpIMBB3PSn6a6jz+ZIMZvQ=",
+        "owner": "catppuccin",
+        "repo": "fish",
+        "rev": "af622a6e247806f6260c00c6d261aa22680e5201",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "repo": "fish",
+        "type": "github"
+      }
+    },
+    "fish-replay": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719805987,
+        "narHash": "sha256-TzQ97h9tBRUg+A7DSKeTBWLQuThicbu19DHMwkmUXdg=",
+        "owner": "jorgebucaran",
+        "repo": "replay.fish",
+        "rev": "d2ecacd3fe7126e822ce8918389f3ad93b14c86c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jorgebucaran",
+        "repo": "replay.fish",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -54,6 +86,8 @@
     },
     "root": {
       "inputs": {
+        "fish-catppuccin": "fish-catppuccin",
+        "fish-replay": "fish-replay",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "rime-wanxiang": "rime-wanxiang"

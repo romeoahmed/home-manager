@@ -22,6 +22,8 @@
 
     pv
 
+    lldb
+    clang-tools
     cmakeMinimal
     ninja
 

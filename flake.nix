@@ -9,6 +9,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+
     rime-wanxiang = {
       url = "github:amzxyz/rime_wanxiang";
       flake = false;
@@ -43,13 +45,14 @@
         # the path to your home.nix.
         modules = [
           ./home.nix
+          ./modules/fonts.nix
+          ./modules/inputMethod.nix
           ./modules/packages.nix
           ./modules/programs.nix
+          ./modules/git.nix
           ./modules/fish.nix
           ./modules/alacritty.nix
-          ./modules/git.nix
-          ./modules/inputMethod.nix
-          ./modules/fonts.nix
+          ./modules/vscode.nix
         ];
 
         # Optionally use extraSpecialArgs

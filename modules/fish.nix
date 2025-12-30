@@ -4,10 +4,6 @@
   programs.fish = {
     enable = true;
 
-    interactiveShellInit = ''
-      set -g fish_greeting
-    '';
-
     plugins = [
       {
         name = "catppuccin/fish";

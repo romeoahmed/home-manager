@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   i18n.inputMethod = {
@@ -65,5 +65,11 @@
         };
       };
     };
+  };
+
+  xdg.dataFile."fcitx5/rime" = {
+    enable = true;
+    source = inputs.rime-wanxiang;
+    recursive = true;
   };
 }

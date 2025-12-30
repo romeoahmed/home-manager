@@ -36,10 +36,27 @@
         "type": "github"
       }
     },
+    "rime-wanxiang": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767082579,
+        "narHash": "sha256-KXhnnjYuCVeMBUcm1AV35YNmTRVtcEsgESenwEYNFbI=",
+        "owner": "amzxyz",
+        "repo": "rime_wanxiang",
+        "rev": "39028a8334d549801e8636f01df71fa0dd810bce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amzxyz",
+        "repo": "rime_wanxiang",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "rime-wanxiang": "rime-wanxiang"
       }
     }
   },

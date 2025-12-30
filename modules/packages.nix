@@ -22,11 +22,6 @@
 
     pv
 
-    lldb
-    clang-tools
-    cmakeMinimal
-    ninja
-
     htop
     btop
     fastfetch

@@ -75,7 +75,10 @@
 
           treefmt = {
             projectRootFile = "flake.nix";
-            programs.nixfmt.enable = true;
+            programs = {
+              nixfmt.enable = true;
+              deadnix.enable = true;
+            };
           };
 
           pre-commit = {
@@ -83,6 +86,7 @@
             settings.hooks = {
               treefmt.enable = true;
               statix.enable = true;
+              deadnix.enable = true;
             };
           };
 
@@ -100,7 +104,7 @@
 
       flake = {
         overlays.default =
-          final: prev:
+          final: _prev:
           let
             inherit (final.stdenv.hostPlatform) system;
           in

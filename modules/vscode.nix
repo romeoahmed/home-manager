@@ -1,8 +1,5 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
-let
-  marketplace = inputs.nix-vscode-extensions.extensions.${pkgs.system}.vscode-marketplace;
-in
 {
   programs.vscode = {
     enable = true;
@@ -12,51 +9,51 @@ in
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
 
-      extensions = [
+      extensions = with pkgs.vscode-marketplace; [
         # Chinese (Simplified) Language Pack
-        marketplace.ms-ceintl.vscode-language-pack-zh-hans
+        ms-ceintl.vscode-language-pack-zh-hans
 
         # GitHub Copilot Chat
-        marketplace.github.copilot-chat
+        github.copilot-chat
 
         # Python
-        marketplace.ms-python.python
+        ms-python.python
 
         # Rust
-        marketplace.rust-lang.rust-analyzer
+        rust-lang.rust-analyzer
 
         # Zig
-        marketplace.ziglang.vscode-zig
+        ziglang.vscode-zig
 
         # clangd
-        marketplace.llvm-vs-code-extensions.vscode-clangd
+        llvm-vs-code-extensions.vscode-clangd
 
         # LLDB DAP
-        marketplace.llvm-vs-code-extensions.lldb-dap
+        llvm-vs-code-extensions.lldb-dap
 
         # CMake Tools
-        marketplace.ms-vscode.cmake-tools
+        ms-vscode.cmake-tools
 
         # ESLint
-        marketplace.dbaeumer.vscode-eslint
+        dbaeumer.vscode-eslint
 
         # Stylelint
-        marketplace.stylelint.vscode-stylelint
+        stylelint.vscode-stylelint
 
         # Prettier
-        marketplace.esbenp.prettier-vscode
+        esbenp.prettier-vscode
 
         # TOML
-        marketplace.tamasfe.even-better-toml
+        tamasfe.even-better-toml
 
         # Markdown
-        marketplace.davidanson.vscode-markdownlint
+        davidanson.vscode-markdownlint
 
         # Material Icon Theme
-        marketplace.pkief.material-icon-theme
+        pkief.material-icon-theme
 
         # GitHub Actions
-        marketplace.github.vscode-github-actions
+        github.vscode-github-actions
       ];
 
       userSettings = {

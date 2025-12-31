@@ -8,6 +8,17 @@
       nix-direnv.enable = true;
     };
 
+    nh = {
+      enable = true;
+      package = pkgs.nh;
+      flake = "/home/victor/.config/home-manager";
+
+      clean = {
+        enable = true;
+        extraArgs = "--keep-since 4d --keep 3";
+      };
+    };
+
     starship = {
       enable = true;
       enableFishIntegration = true;
@@ -30,6 +41,7 @@
 
     helix = {
       enable = true;
+      package = pkgs.helix;
       defaultEditor = true;
     };
   };

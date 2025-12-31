@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   programs.fish = {
@@ -7,11 +7,11 @@
     plugins = [
       {
         name = "catppuccin/fish";
-        src = inputs.fish-catppuccin;
+        src = pkgs.fish-plugins.catppuccin;
       }
       {
         name = "jorgebucaran/replay.fish";
-        src = inputs.fish-replay;
+        src = pkgs.fish-plugins.replay;
       }
     ];
   };

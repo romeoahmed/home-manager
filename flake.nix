@@ -1,15 +1,21 @@
 {
-  description = "Home Manager configuration of victor";
+  description = "My Nix World";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
     systems.url = "github:nix-systems/default";
+
+    flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/0.1";
+
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    treefmt-nix = {
+      url = "https://flakehub.com/f/numtide/treefmt-nix/0.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     git-hooks = {
       url = "https://flakehub.com/f/cachix/git-hooks.nix/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,107 +50,99 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      systems,
-      home-manager,
-      git-hooks,
-      ...
-    }@inputs:
-    let
-      forEachSystem =
-        f:
-        nixpkgs.lib.genAttrs (import systems) (
-          system:
-          let
-            pkgs = import nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [ self.overlays.default ];
-            };
+    inputs@{ self, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.git-hooks.flakeModule
+        inputs.treefmt-nix.flakeModule
+      ];
 
-            pre-commit-check = git-hooks.lib.${system}.run {
-              src = ./.;
-              hooks = {
-                nixfmt-rfc-style.enable = true;
-                statix.enable = true;
-              };
-            };
-          in
-          f { inherit pkgs pre-commit-check; }
-        );
-    in
-    {
-      overlays.default = final: prev: {
-        fh = inputs.fh.packages.${final.stdenv.hostPlatform.system}.default;
-        nh = inputs.nh.packages.${final.stdenv.hostPlatform.system}.default;
-        helix = inputs.helix.packages.${final.stdenv.hostPlatform.system}.default;
+      systems = import inputs.systems;
 
-        inherit (inputs.nix-vscode-extensions.extensions.${final.stdenv.hostPlatform.system})
-          vscode-marketplace
-          ;
-
-        inherit (inputs) rime-wanxiang;
-
-        fish-plugins = {
-          replay = inputs.fish-replay;
-          catppuccin = inputs.fish-catppuccin;
-        };
-      };
-
-      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
-
-      checks = forEachSystem (
-        { pre-commit-check, ... }:
+      perSystem =
         {
-          inherit pre-commit-check;
-        }
-      );
-
-      devShells = forEachSystem (
-        { pkgs, pre-commit-check }:
+          config,
+          system,
+          pkgs,
+          ...
+        }:
         {
-          default = pkgs.mkShellNoCC {
-            packages =
-              (with pkgs; [
-                nixd
-              ])
-              ++ pre-commit-check.enabledPackages;
-
-            inherit (pre-commit-check) shellHook;
-          };
-        }
-      );
-
-      homeConfigurations."victor" =
-        let
-          system = "x86_64-linux";
-          pkgs = import nixpkgs {
+          _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
             overlays = [ self.overlays.default ];
           };
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
 
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = [
-            ./home.nix
-            ./modules/fonts.nix
-            ./modules/inputMethod.nix
-            ./modules/packages.nix
-            ./modules/programs.nix
-            ./modules/git.nix
-            ./modules/fish.nix
-            ./modules/alacritty.nix
-            ./modules/vscode.nix
-          ];
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs.nixfmt.enable = true;
+          };
 
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
+          pre-commit = {
+            check.enable = true;
+            settings.hooks = {
+              treefmt.enable = true;
+              statix.enable = true;
+            };
+          };
+
+          devShells.default = pkgs.mkShellNoCC {
+            packages =
+              with pkgs;
+              [
+                nixd
+              ]
+              ++ config.pre-commit.settings.enabledPackages;
+
+            inherit (config.pre-commit) shellHook;
+          };
         };
+
+      flake = {
+        overlays.default =
+          final: prev:
+          let
+            inherit (final.stdenv.hostPlatform) system;
+          in
+          {
+            fh = inputs.fh.packages.${system}.default;
+            nh = inputs.nh.packages.${system}.default;
+            helix = inputs.helix.packages.${system}.default;
+
+            inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
+
+            inherit (inputs) rime-wanxiang;
+
+            fish-plugins = {
+              replay = inputs.fish-replay;
+              catppuccin = inputs.fish-catppuccin;
+            };
+          };
+
+        homeConfigurations."victor" =
+          let
+            system = "x86_64-linux";
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+              overlays = [ self.overlays.default ];
+            };
+          in
+          inputs.home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+
+            modules = [
+              ./home.nix
+              ./modules/fonts.nix
+              ./modules/inputMethod.nix
+              ./modules/packages.nix
+              ./modules/programs.nix
+              ./modules/git.nix
+              ./modules/fish.nix
+              ./modules/alacritty.nix
+              ./modules/vscode.nix
+            ];
+          };
+      };
     };
 }

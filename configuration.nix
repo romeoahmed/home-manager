@@ -11,7 +11,7 @@ _:
   nix = {
     settings = {
       substituters = [
-        "https://mirror.sjtu.edu.cn/nix-channels/store"
+        "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
         "https://nix-community.cachix.org"
         "https://hercules-ci.cachix.org"
         "https://numtide.cachix.org"

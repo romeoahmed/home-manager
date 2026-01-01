@@ -11,6 +11,7 @@ _:
   nix = {
     settings = {
       substituters = [
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
         "https://nix-community.cachix.org"
         "https://hercules-ci.cachix.org"
         "https://numtide.cachix.org"
@@ -32,6 +33,8 @@ _:
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  time.timeZone = "Asia/Shanghai";
 
   programs.nix-ld.enable = true;
 }

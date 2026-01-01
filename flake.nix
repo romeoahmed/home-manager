@@ -27,7 +27,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1";
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.2";
     treefmt-nix = {
       url = "https://flakehub.com/f/numtide/treefmt-nix/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -108,6 +108,7 @@
           pre-commit = {
             check.enable = true;
             settings.hooks = {
+              editorconfig-checker.enable = true;
               treefmt.enable = true;
               statix.enable = true;
               deadnix.enable = true;

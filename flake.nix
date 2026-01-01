@@ -7,11 +7,27 @@
 
     flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/0.1";
 
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      flake = false;
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.follows = "lix";
+    };
+
     home-manager = {
       url = "https://flakehub.com/f/nix-community/home-manager/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.1";
     treefmt-nix = {
       url = "https://flakehub.com/f/numtide/treefmt-nix/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,9 +45,14 @@
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
+    rust-overlay = {
+      url = "https://flakehub.com/f/oxalica/rust-overlay/0.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     helix = {
       url = "https://flakehub.com/f/helix-editor/helix/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
 
     rime-wanxiang = {
@@ -70,7 +91,10 @@
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = [ self.overlays.default ];
+            overlays = [
+              self.overlays.default
+              inputs.rust-overlay.overlays.default
+            ];
           };
 
           treefmt = {
@@ -103,6 +127,8 @@
         };
 
       flake = {
+        inherit (inputs.flake-schemas) schemas;
+
         overlays.default =
           final: _prev:
           let
@@ -123,30 +149,33 @@
             };
           };
 
-        homeConfigurations."victor" =
-          let
+        nixosConfigurations = {
+          nixos = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
-            pkgs = import inputs.nixpkgs {
-              inherit system;
-              config.allowUnfree = true;
-              overlays = [ self.overlays.default ];
-            };
-          in
-          inputs.home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-
             modules = [
-              ./home.nix
-              ./modules/fonts.nix
-              ./modules/inputMethod.nix
-              ./modules/packages.nix
-              ./modules/programs.nix
-              ./modules/git.nix
-              ./modules/fish.nix
-              ./modules/alacritty.nix
-              ./modules/vscode.nix
+              inputs.lix-module.nixosModules.default
+
+              inputs.nixos-wsl.nixosModules.default
+              ./configuration.nix
+
+              {
+                nixpkgs.overlays = [
+                  self.overlays.default
+                  inputs.rust-overlay.overlays.default
+                ];
+              }
+
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  users.victor = ./home.nix;
+                };
+              }
             ];
           };
+        };
       };
     };
 }

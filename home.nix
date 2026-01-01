@@ -1,6 +1,17 @@
 _:
 
 {
+  imports = [
+    # ./modules/fonts.nix
+    # ./modules/inputMethod.nix
+    ./modules/packages.nix
+    ./modules/programs.nix
+    ./modules/git.nix
+    ./modules/fish.nix
+    # ./modules/alacritty.nix
+    # ./modules/vscode.nix
+  ];
+
   home = {
     username = "victor";
     homeDirectory = "/home/victor";

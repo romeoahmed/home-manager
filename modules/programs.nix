@@ -2,6 +2,19 @@
 
 {
   programs = {
+    bash = {
+      enable = true;
+      enableCompletion = true;
+
+      bashrcExtra = ''
+        if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} && ''${SHLVL} == 1 ]]
+        then
+          shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION='''
+          exec fish $LOGIN_OPTION
+        fi
+      '';
+    };
+
     direnv = {
       enable = true;
       # enableFishIntegration = true;
@@ -41,8 +54,8 @@
 
     helix = {
       enable = true;
-      package = pkgs.helix;
       defaultEditor = true;
+      settings.theme = "catppuccin_macchiato";
     };
   };
 }

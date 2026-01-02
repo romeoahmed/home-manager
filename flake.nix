@@ -22,6 +22,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-ld = {
+      url = "github:nix-community/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -51,8 +56,10 @@
     };
     helix = {
       url = "https://flakehub.com/f/helix-editor/helix/0.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
 
     rime-wanxiang = {
@@ -153,8 +160,12 @@
         nixosConfigurations = {
           nixos = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
+            specialArgs = { inherit inputs; };
             modules = [
               inputs.lix-module.nixosModules.default
+
+              inputs.nix-ld.nixosModules.nix-ld
+              { programs.nix-ld.dev.enable = true; }
 
               inputs.nixos-wsl.nixosModules.default
               ./configuration.nix

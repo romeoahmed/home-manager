@@ -1,14 +1,19 @@
-_:
+{ inputs, ... }:
 
 {
   system.stateVersion = "25.05";
 
   wsl = {
     enable = true;
+    useWindowsDriver = true;
     defaultUser = "victor";
   };
 
   nix = {
+    channel.enable = false;
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    registry.nixpkgs.flake = inputs.nixpkgs;
+
     settings = {
       substituters = [
         "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
@@ -35,6 +40,4 @@ _:
   nixpkgs.config.allowUnfree = true;
 
   time.timeZone = "Asia/Shanghai";
-
-  programs.nix-ld.enable = true;
 }

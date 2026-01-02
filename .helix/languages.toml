@@ -6,10 +6,11 @@ command = "nixd"
 
 [language-server.nixd.config]
 nixpkgs = { expr = "import <nixpkgs> { }" }
-formatting = { command = [ "nixfmt" ] }
+formatting = { command = [ "treefmt", "--stdin", "{}" ] }
 
 [language-server.nixd.config.options]
-home-manager = { expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.victor.options" }
+nixos = { expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixos.options" }
+home-manager = { expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.nixos.options.home-manager.users.type.getSubOptions []" }
 
 [language-server.nixd.config.diagnostic]
 suppress = [ "sema-extra-with" ]

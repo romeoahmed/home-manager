@@ -109,6 +109,7 @@
             programs = {
               nixfmt.enable = true;
               deadnix.enable = true;
+              just.enable = true;
             };
           };
 
@@ -127,6 +128,8 @@
               with pkgs;
               [
                 nixd
+                just
+                just-lsp
               ]
               ++ config.pre-commit.settings.enabledPackages;
 

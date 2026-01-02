@@ -6,7 +6,7 @@ command = "nixd"
 
 [language-server.nixd.config]
 nixpkgs = { expr = "import <nixpkgs> { }" }
-formatting = { command = [ "nixfmt" ] }
+formatting = { command = [ "treefmt", "--stdin", "{}" ] }
 
 [language-server.nixd.config.options]
 home-manager = { expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.victor.options" }

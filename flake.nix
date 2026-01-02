@@ -12,6 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.2";
     treefmt-nix = {
       url = "https://flakehub.com/f/numtide/treefmt-nix/0.1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,9 +30,16 @@
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
+    rust-overlay = {
+      url = "https://flakehub.com/f/oxalica/rust-overlay/0.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     helix = {
       url = "https://flakehub.com/f/helix-editor/helix/0.1";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
 
     rime-wanxiang = {
@@ -70,7 +78,10 @@
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             config.allowUnfree = true;
-            overlays = [ self.overlays.default ];
+            overlays = [
+              self.overlays.default
+              inputs.rust-overlay.overlays.default
+            ];
           };
 
           treefmt = {
@@ -84,6 +95,7 @@
           pre-commit = {
             check.enable = true;
             settings.hooks = {
+              editorconfig-checker.enable = true;
               treefmt.enable = true;
               statix.enable = true;
               deadnix.enable = true;
@@ -103,6 +115,8 @@
         };
 
       flake = {
+        inherit (inputs.flake-schemas) schemas;
+
         overlays.default =
           final: _prev:
           let
@@ -129,7 +143,10 @@
             pkgs = import inputs.nixpkgs {
               inherit system;
               config.allowUnfree = true;
-              overlays = [ self.overlays.default ];
+              overlays = [
+                self.overlays.default
+                inputs.rust-overlay.overlays.default
+              ];
             };
           in
           inputs.home-manager.lib.homeManagerConfiguration {

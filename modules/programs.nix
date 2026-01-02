@@ -43,6 +43,7 @@
       enable = true;
       package = pkgs.helix;
       defaultEditor = true;
+      settings.theme = "catppuccin_macchiato";
     };
   };
 }

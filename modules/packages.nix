@@ -2,13 +2,11 @@
 
 {
   home.packages = with pkgs; [
-    fh
-
     curl
     wget
     aria2
     unzip
-    wl-clipboard
+    wl-clipboard-rs
 
     vim
     nano

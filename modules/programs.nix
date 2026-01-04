@@ -1,16 +1,19 @@
-{ pkgs, ... }:
+_:
 
 {
   programs = {
+    fish = {
+      enable = true;
+      generateCompletions = true;
+    };
+
     direnv = {
       enable = true;
-      # enableFishIntegration = true;
       nix-direnv.enable = true;
     };
 
     nh = {
       enable = true;
-      package = pkgs.nh;
       flake = "/home/victor/.config/home-manager";
 
       clean = {
@@ -41,9 +44,7 @@
 
     helix = {
       enable = true;
-      package = pkgs.helix;
       defaultEditor = true;
-      settings.theme = "catppuccin_macchiato";
     };
   };
 }

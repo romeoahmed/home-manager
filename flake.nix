@@ -2,10 +2,10 @@
   description = "My Nix World";
 
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
 
-    flake-parts.url = "https://flakehub.com/f/hercules-ci/flake-parts/0.1";
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
@@ -18,7 +18,7 @@
     };
 
     home-manager = {
-      url = "https://flakehub.com/f/nix-community/home-manager/0.1";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -32,47 +32,41 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0.2";
     treefmt-nix = {
-      url = "https://flakehub.com/f/numtide/treefmt-nix/0.1";
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     git-hooks = {
-      url = "https://flakehub.com/f/cachix/git-hooks.nix/0.1";
+      url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fh.url = "https://flakehub.com/f/DeterminateSystems/fh/0.1";
     nh = {
-      url = "https://flakehub.com/f/nix-community/nh/4.2.0-beta5";
+      url = "github:nix-community/nh";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     rust-overlay = {
-      url = "https://flakehub.com/f/oxalica/rust-overlay/0.1";
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helix = {
-      url = "https://flakehub.com/f/helix-editor/helix/0.1";
+      url = "github:helix-editor/helix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         rust-overlay.follows = "rust-overlay";
       };
     };
 
-    rime-wanxiang = {
-      url = "github:amzxyz/rime_wanxiang";
-      flake = false;
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fish-replay = {
-      url = "github:jorgebucaran/replay.fish";
-      flake = false;
-    };
-    fish-catppuccin = {
-      url = "github:catppuccin/fish";
+    rime-wanxiang = {
+      url = "github:amzxyz/rime_wanxiang";
       flake = false;
     };
   };
@@ -138,26 +132,18 @@
         };
 
       flake = {
-        inherit (inputs.flake-schemas) schemas;
-
         overlays.default =
           final: _prev:
           let
             inherit (final.stdenv.hostPlatform) system;
           in
           {
-            fh = inputs.fh.packages.${system}.default;
             nh = inputs.nh.packages.${system}.default;
             helix = inputs.helix.packages.${system}.default;
 
             inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
 
             inherit (inputs) rime-wanxiang;
-
-            fish-plugins = {
-              replay = inputs.fish-replay;
-              catppuccin = inputs.fish-catppuccin;
-            };
           };
 
         nixosConfigurations = {
@@ -180,12 +166,27 @@
                 ];
               }
 
+              inputs.catppuccin.nixosModules.catppuccin
+
               inputs.home-manager.nixosModules.home-manager
               {
                 home-manager = {
                   useGlobalPkgs = true;
                   useUserPackages = true;
-                  users.victor = ./home.nix;
+                  extraSpecialArgs = { inherit inputs; };
+
+                  users.victor = {
+                    imports = [
+                      ./home.nix
+                      inputs.catppuccin.homeModules.catppuccin
+                      {
+                        catppuccin = {
+                          enable = true;
+                          flavor = "macchiato";
+                        };
+                      }
+                    ];
+                  };
                 };
               }
             ];

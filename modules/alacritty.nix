@@ -3,8 +3,7 @@
 {
   programs.alacritty = {
     enable = true;
-    themePackage = pkgs.alacritty-theme;
-    theme = "catppuccin_macchiato";
+
     settings = {
       window = {
         padding = {

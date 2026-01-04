@@ -7,7 +7,6 @@ _:
     ./modules/packages.nix
     ./modules/programs.nix
     ./modules/git.nix
-    ./modules/fish.nix
     # ./modules/alacritty.nix
     # ./modules/vscode.nix
   ];
@@ -15,7 +14,7 @@ _:
   home = {
     username = "victor";
     homeDirectory = "/home/victor";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
 
     sessionVariables = {
       # EDITOR = "emacs";

@@ -15,15 +15,15 @@
       '';
     };
 
+    fish.enable = true;
+
     direnv = {
       enable = true;
-      # enableFishIntegration = true;
       nix-direnv.enable = true;
     };
 
     nh = {
       enable = true;
-      package = pkgs.nh;
       flake = "/home/victor/.config/home-manager";
 
       clean = {
@@ -55,7 +55,6 @@
     helix = {
       enable = true;
       defaultEditor = true;
-      settings.theme = "catppuccin_macchiato";
     };
   };
 }

@@ -2,8 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    fh
-
     curl
     wget
     aria2

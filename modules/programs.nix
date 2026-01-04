@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 
 {
   programs = {
@@ -15,7 +15,10 @@
       '';
     };
 
-    fish.enable = true;
+    fish = {
+      enable = true;
+      generateCompletions = true;
+    };
 
     direnv = {
       enable = true;
@@ -24,7 +27,7 @@
 
     nh = {
       enable = true;
-      flake = "/home/victor/.config/home-manager";
+      flake = "/home/victor/nixconfig";
 
       clean = {
         enable = true;

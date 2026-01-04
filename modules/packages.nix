@@ -6,7 +6,7 @@
     wget
     aria2
     unzip
-    wl-clipboard
+    wl-clipboard-rs
 
     vim
     nano

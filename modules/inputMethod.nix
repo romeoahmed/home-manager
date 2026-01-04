@@ -47,10 +47,6 @@
             ShowLayoutNameInIcon = "True";
             # 使用输入法的语言来显示文字
             UseInputMethodLanguageToDisplayText = "True";
-            # 主题
-            Theme = "plasma";
-            # 深色主题
-            DarkTheme = "plasma";
             # 跟随系统浅色/深色设置
             UseDarkTheme = "True";
             # 当被主题和桌面支持时使用系统的重点色

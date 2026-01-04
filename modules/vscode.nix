@@ -3,7 +3,6 @@
 {
   programs.vscode = {
     enable = true;
-    package = pkgs.vscode;
 
     profiles.default = {
       enableUpdateCheck = false;
@@ -49,9 +48,6 @@
         # Markdown
         davidanson.vscode-markdownlint
 
-        # Material Icon Theme
-        pkief.material-icon-theme
-
         # GitHub Actions
         github.vscode-github-actions
       ];
@@ -62,7 +58,6 @@
         "editor.fontLigatures" = true;
         "terminal.integrated.fontFamily" = "'JetBrainsMonoNL Nerd Font'";
         "terminal.integrated.defaultProfile.linux" = "fish";
-        "workbench.iconTheme" = "material-icon-theme";
       };
     };
   };

@@ -1,4 +1,4 @@
-_:
+{ config, ... }:
 
 {
   programs = {
@@ -20,6 +20,8 @@ _:
       generateCompletions = true;
     };
 
+    nushell.enable = true;
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -27,12 +29,21 @@ _:
 
     nh = {
       enable = true;
-      flake = "/home/victor/nixconfig";
+      flake = "${config.home.homeDirectory}/nixconfig";
 
       clean = {
         enable = true;
         extraArgs = "--keep-since 4d --keep 3";
       };
+    };
+
+    fd.enable = true;
+    ripgrep.enable = true;
+    bat.enable = true;
+
+    eza = {
+      enable = true;
+      enableFishIntegration = true;
     };
 
     starship = {
@@ -54,6 +65,11 @@ _:
       enable = true;
       enableFishIntegration = true;
     };
+
+    htop.enable = true;
+    btop.enable = true;
+    fastfetch.enable = true;
+    aria2.enable = true;
 
     helix = {
       enable = true;

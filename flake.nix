@@ -157,6 +157,7 @@
               ./modules/git.nix
               ./modules/alacritty.nix
               ./modules/vscode.nix
+              ./modules/firefox.nix
             ];
           };
       };

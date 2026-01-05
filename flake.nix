@@ -32,6 +32,15 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zig-overlay = {
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zls = {
+      url = "github:zigtools/zls";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     helix = {
       url = "github:helix-editor/helix";
       inputs = {
@@ -75,6 +84,7 @@
             overlays = [
               self.overlays.default
               inputs.rust-overlay.overlays.default
+              inputs.zig-overlay.overlays.default
             ];
           };
 
@@ -116,6 +126,7 @@
           in
           {
             nh = inputs.nh.packages.${system}.default;
+            zls = inputs.zls.packages.${system}.default;
             helix = inputs.helix.packages.${system}.default;
 
             inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
@@ -132,6 +143,7 @@
               overlays = [
                 self.overlays.default
                 inputs.rust-overlay.overlays.default
+                inputs.zig-overlay.overlays.default
               ];
             };
           in
@@ -157,6 +169,7 @@
               ./modules/git.nix
               ./modules/alacritty.nix
               ./modules/vscode.nix
+              ./modules/zed.nix
               ./modules/firefox.nix
             ];
           };

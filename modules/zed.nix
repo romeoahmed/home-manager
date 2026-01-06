@@ -2,7 +2,7 @@
 
 {
   programs.zed-editor = {
-    enable = true;
+    enable = false;
 
     extensions = [
       "nix"
@@ -10,7 +10,6 @@
       "toml"
       "make"
       "fish"
-      "zig"
     ];
 
     extraPackages = with pkgs; [
@@ -22,7 +21,6 @@
       })
 
       nixd
-      zls
       clang-tools
       basedpyright
     ];

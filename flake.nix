@@ -17,9 +17,17 @@
       inputs.lix.follows = "lix";
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
 
     nix-ld = {
@@ -27,8 +35,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    auto-cpufreq = {
+      url = "github:AdnanHodzic/auto-cpufreq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -46,18 +59,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zig-overlay = {
-      url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zls = {
-      url = "github:zigtools/zls";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -104,7 +107,6 @@
             overlays = [
               self.overlays.default
               inputs.rust-overlay.overlays.default
-              inputs.zig-overlay.overlays.default
             ];
           };
 
@@ -149,10 +151,7 @@
           in
           {
             nh = inputs.nh.packages.${system}.default;
-            zls = inputs.zls.packages.${system}.default;
             helix = inputs.helix.packages.${system}.default;
-
-            inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
 
             inherit (inputs) rime-wanxiang;
           };
@@ -162,21 +161,24 @@
             system = "x86_64-linux";
             specialArgs = { inherit inputs; };
             modules = [
-              inputs.lix-module.nixosModules.default
+              inputs.disko.nixosModules.disko
+              inputs.lanzaboote.nixosModules.lanzaboote
 
-              inputs.nix-ld.nixosModules.nix-ld
-              { programs.nix-ld.dev.enable = true; }
-
-              inputs.nixos-wsl.nixosModules.default
               ./configuration.nix
+              ./hosts/disk-config.nix
+
+              inputs.lix-module.nixosModules.default
 
               {
                 nixpkgs.overlays = [
                   self.overlays.default
                   inputs.rust-overlay.overlays.default
-                  inputs.zig-overlay.overlays.default
                 ];
               }
+
+              inputs.nix-ld.nixosModules.nix-ld
+
+              inputs.auto-cpufreq.nixosModules.default
 
               inputs.catppuccin.nixosModules.catppuccin
 
@@ -191,12 +193,6 @@
                     imports = [
                       ./home.nix
                       inputs.catppuccin.homeModules.catppuccin
-                      {
-                        catppuccin = {
-                          enable = true;
-                          flavor = "macchiato";
-                        };
-                      }
                     ];
                   };
                 };

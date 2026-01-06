@@ -62,10 +62,12 @@
         "firefox@tampermonkey.net" = {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/tampermonkey/latest.xpi";
+          default_area = "navbar";
         };
         "wappalyzer@crunchlabz.com" = {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/wappalyzer/latest.xpi";
+          default_area = "navbar";
         };
       };
 

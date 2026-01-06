@@ -6,11 +6,13 @@
 
     extensions = [
       "nix"
+      "git-firefly"
       "html"
       "toml"
       "make"
       "fish"
-      "zig"
+      "catppuccin"
+      "catppuccin-icons"
     ];
 
     extraPackages = with pkgs; [
@@ -22,7 +24,7 @@
       })
 
       nixd
-      zls
+      nixfmt
       clang-tools
       basedpyright
     ];
@@ -35,6 +37,7 @@
       buffer_font_features = {
         calt = true;
       };
+      buffer_font_fallbacks = [ "Noto Sans CJK SC" ];
 
       features = {
         edit_prediction_provider = "zed";
@@ -44,10 +47,31 @@
         font_family = "JetBrainsMonoNL Nerd Font";
         font_size = 14;
         shell = {
-          with_arguments = {
-            program = "${pkgs.fish}/bin/fish";
-            args = [ "--login" ];
+          program = "fish";
+        };
+      };
+
+      lsp = {
+        nixd = {
+          settings = {
+            diagnostic = {
+              suppress = [ "sema-extra-with" ];
+            };
           };
+          initialization_options = {
+            formatting = {
+              command = [ "nixfmt" ];
+            };
+          };
+        };
+      };
+
+      languages = {
+        Nix = {
+          language_servers = [
+            "nixd"
+            "!nil"
+          ];
         };
       };
     };

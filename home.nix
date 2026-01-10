@@ -2,16 +2,10 @@ _:
 
 {
   imports = [
-    # ./modules/fonts.nix
-    # ./modules/inputMethod.nix
     ./modules/packages.nix
     ./modules/programs.nix
     ./modules/gnupg.nix
     ./modules/git.nix
-    # ./modules/alacritty.nix
-    # ./modules/vscode.nix
-    # ./modules/zed.nix
-    # ./modules/firefox.nix
   ];
 
   home = {

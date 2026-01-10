@@ -32,14 +32,6 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zig-overlay = {
-      url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    zls = {
-      url = "github:zigtools/zls";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     helix = {
       url = "github:helix-editor/helix";
@@ -84,7 +76,6 @@
             overlays = [
               self.overlays.default
               inputs.rust-overlay.overlays.default
-              inputs.zig-overlay.overlays.default
             ];
           };
 
@@ -126,7 +117,6 @@
           in
           {
             nh = inputs.nh.packages.${system}.default;
-            zls = inputs.zls.packages.${system}.default;
             helix = inputs.helix.packages.${system}.default;
 
             inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
@@ -143,7 +133,6 @@
               overlays = [
                 self.overlays.default
                 inputs.rust-overlay.overlays.default
-                inputs.zig-overlay.overlays.default
               ];
             };
           in
@@ -153,15 +142,8 @@
 
             modules = [
               ./home.nix
-
               inputs.catppuccin.homeModules.catppuccin
-              {
-                catppuccin = {
-                  enable = true;
-                  flavor = "macchiato";
-                };
-              }
-
+              ./modules/catppuccin.nix
               ./modules/fonts.nix
               ./modules/inputMethod.nix
               ./modules/packages.nix

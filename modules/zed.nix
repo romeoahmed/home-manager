@@ -10,7 +10,6 @@
       "toml"
       "make"
       "fish"
-      "zig"
     ];
 
     extraPackages = with pkgs; [
@@ -22,7 +21,6 @@
       })
 
       nixd
-      zls
       clang-tools
       basedpyright
     ];

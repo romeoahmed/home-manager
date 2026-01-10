@@ -46,8 +46,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -141,8 +139,6 @@
           {
             nh = inputs.nh.packages.${system}.default;
             helix = inputs.helix.packages.${system}.default;
-
-            inherit (inputs.nix-vscode-extensions.extensions.${system}) vscode-marketplace;
 
             inherit (inputs) rime-wanxiang;
           };

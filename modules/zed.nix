@@ -36,6 +36,7 @@
       buffer_font_features = {
         calt = true;
       };
+      buffer_font_fallbacks = [ "Noto Sans CJK SC" ];
 
       features = {
         edit_prediction_provider = "zed";
@@ -45,10 +46,7 @@
         font_family = "JetBrainsMonoNL Nerd Font";
         font_size = 14;
         shell = {
-          with_arguments = {
-            program = "fish";
-            args = [ "--login" ];
-          };
+          program = "fish";
         };
       };
     };

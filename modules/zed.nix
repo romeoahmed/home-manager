@@ -6,10 +6,13 @@
 
     extensions = [
       "nix"
+      "git-firefly"
       "html"
       "toml"
       "make"
       "fish"
+      "catppuccin"
+      "catppuccin-icons"
     ];
 
     extraPackages = with pkgs; [

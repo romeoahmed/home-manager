@@ -24,6 +24,7 @@
       })
 
       nixd
+      nixfmt
       clang-tools
       basedpyright
     ];
@@ -47,6 +48,30 @@
         font_size = 14;
         shell = {
           program = "fish";
+        };
+      };
+
+      lsp = {
+        nixd = {
+          settings = {
+            diagnostic = {
+              suppress = [ "sema-extra-with" ];
+            };
+          };
+          initialization_options = {
+            formatting = {
+              command = [ "nixfmt" ];
+            };
+          };
+        };
+      };
+
+      languages = {
+        Nix = {
+          language_servers = [
+            "nixd"
+            "!nil"
+          ];
         };
       };
     };
